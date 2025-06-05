@@ -3,11 +3,11 @@ export const translations = {
   hu: {
     // Navigation
     nav: {
-      contact: "Kapcsolat",
       home: "Főoldal",
       portfolio: "Portfólió",
       services: "Szolgáltatások",
-      about: "Rólunk"
+      about: "Rólunk",
+      contact: "Kapcsolat"
     },
     // Hero Section
     hero: {
@@ -78,7 +78,10 @@ export const translations = {
           consultation: "Tanácsadás",
           design: "Tervezés",
           furniture: "Egyedi bútor"
-        }
+        },
+        privacyNotice: "Kérjük, olvassa el és fogadja el az Adatvédelmi tájékoztatót",
+        privacyAccept: "Elfogadom az Adatvédelmi tájékoztatót",
+        privacyError: "Kérjük, fogadja el az adatvédelmi tájékoztatót."
       },
       details: {
         phone: "Telefon: +36 20 123 4567",
@@ -100,11 +103,11 @@ export const translations = {
   en: {
     // Navigation
     nav: {
-      contact: "Contact",
       home: "Home",
       portfolio: "Portfolio",
       services: "Services",
-      about: "About"
+      about: "About",
+      contact: "Contact"
     },
     // Hero Section
     hero: {
@@ -175,7 +178,10 @@ export const translations = {
           consultation: "Consultation",
           design: "Design",
           furniture: "Custom Furniture"
-        }
+        },
+        privacyNotice: "Please read and accept the Privacy Policy",
+        privacyAccept: "I accept the Privacy Policy",
+        privacyError: "Please accept the Privacy Policy."
       },
       details: {
         phone: "Phone: +36 20 123 4567",

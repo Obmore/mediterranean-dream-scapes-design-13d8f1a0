@@ -7,6 +7,8 @@ const Home = () => {
   const { t, language } = useLanguage();
   const [selectedProject, setSelectedProject] = useState<string | null>(null);
   const [selectedService, setSelectedService] = useState<string | null>(null);
+  const [showPrivacyModal, setShowPrivacyModal] = useState(false);
+  const [privacyAccepted, setPrivacyAccepted] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -25,6 +27,10 @@ const Home = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    if (!privacyAccepted) {
+      alert(t.contact.form.privacyError);
+      return;
+    }
     console.log('Form submitted:', formData);
     alert(language === 'hu' ? 'Köszönjük! Hamarosan felvesszük Önnel a kapcsolatot.' : 'Thank you! We will contact you soon.');
   };
@@ -96,147 +102,13 @@ const Home = () => {
 
   const serviceKeys = ['consultation', 'design', 'furniture'] as const;
 
+  const privacyPolicyContent = {
+    hu: "Ez egy helyőrző adatvédelmi tájékoztató. Itt található a teljes adatvédelmi politika szövege, amely leírja, hogyan gyűjtjük, használjuk és védjük személyes adatait. A valós implementációban itt szerepelne a teljes jogi szöveg az adatkezelésről, sütihasználatról és a felhasználói jogokról.",
+    en: "This is a placeholder privacy policy. Here you would find the complete privacy policy text that describes how we collect, use, and protect your personal data. In a real implementation, this would contain the full legal text about data processing, cookie usage, and user rights."
+  };
+
   return (
     <div className="w-full">
-      {/* Contact Section - First and prominent */}
-      <section id="contact" className="min-h-screen bg-gray-50 pt-20">
-        <div className="container mx-auto px-6 h-full">
-          <div className="grid lg:grid-cols-2 gap-12 h-full items-center">
-            {/* Map */}
-            <div className="relative h-96 lg:h-full min-h-[400px] rounded-lg overflow-hidden shadow-lg">
-              <iframe
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2695.5234567890123!2d19.0522!3d47.4979!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNDfCsDI5JzUyLjQiTiAxOcKwMDMnMDcuOSJF!5e0!3m2!1sen!2shu!4v1234567890"
-                width="100%"
-                height="100%"
-                style={{ border: 0 }}
-                allowFullScreen
-                loading="lazy"
-                referrerPolicy="no-referrer-when-downgrade"
-                className="rounded-lg transition-transform duration-300 hover:scale-105"
-                title={language === 'hu' ? "Budapest térképe" : "Map of Budapest"}
-              />
-            </div>
-
-            {/* Contact Form */}
-            <div className="bg-white/90 backdrop-blur-sm p-8 rounded-lg shadow-lg">
-              <h1 id="contact-heading" className="text-3xl md:text-4xl font-serif mb-6 text-navy-800 text-center">
-                {t.contact.title}
-              </h1>
-              
-              <form onSubmit={handleSubmit} className="space-y-6">
-                <div>
-                  <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">
-                    {t.contact.form.name}
-                  </label>
-                  <input
-                    type="text"
-                    id="name"
-                    name="name"
-                    value={formData.name}
-                    onChange={handleChange}
-                    required
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-terracotta-500 focus:border-terracotta-500"
-                  />
-                </div>
-
-                <div>
-                  <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
-                    {t.contact.form.email}
-                  </label>
-                  <input
-                    type="email"
-                    id="email"
-                    name="email"
-                    value={formData.email}
-                    onChange={handleChange}
-                    required
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-terracotta-500 focus:border-terracotta-500"
-                  />
-                </div>
-
-                <div>
-                  <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-2">
-                    {t.contact.form.phone}
-                  </label>
-                  <input
-                    type="tel"
-                    id="phone"
-                    name="phone"
-                    value={formData.phone}
-                    onChange={handleChange}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-terracotta-500 focus:border-terracotta-500"
-                  />
-                </div>
-
-                <div>
-                  <label htmlFor="service" className="block text-sm font-medium text-gray-700 mb-2">
-                    {t.contact.form.service}
-                  </label>
-                  <select
-                    id="service"
-                    name="service"
-                    value={formData.service}
-                    onChange={handleChange}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-terracotta-500 focus:border-terracotta-500"
-                  >
-                    <option value="">{language === 'hu' ? 'Válasszon...' : 'Select...'}</option>
-                    <option value="consultation">{t.contact.form.serviceOptions.consultation}</option>
-                    <option value="design">{t.contact.form.serviceOptions.design}</option>
-                    <option value="furniture">{t.contact.form.serviceOptions.furniture}</option>
-                  </select>
-                </div>
-
-                <div>
-                  <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-2">
-                    {t.contact.form.message}
-                  </label>
-                  <textarea
-                    id="message"
-                    name="message"
-                    rows={4}
-                    value={formData.message}
-                    onChange={handleChange}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-terracotta-500 focus:border-terracotta-500"
-                  />
-                </div>
-
-                <button
-                  type="submit"
-                  className="w-full bg-terracotta-600 text-white py-3 px-6 rounded-lg hover:bg-white hover:text-terracotta-600 hover:border-navy-800 border-2 border-transparent transition-all duration-300 font-medium"
-                >
-                  {t.contact.form.submit}
-                </button>
-              </form>
-
-              {/* Contact Details */}
-              <div className="mt-8 text-center space-y-2">
-                <div className="flex items-center justify-center space-x-3">
-                  <span className="text-terracotta-600">📞</span>
-                  <span className="text-sm">{t.contact.details.phone}</span>
-                </div>
-                <div className="flex items-center justify-center space-x-3">
-                  <span className="text-terracotta-600">✉️</span>
-                  <span className="text-sm">{t.contact.details.email}</span>
-                </div>
-                <div className="flex items-center justify-center space-x-3">
-                  <span className="text-terracotta-600">📍</span>
-                  <span className="text-sm">{t.contact.details.office}</span>
-                </div>
-              </div>
-
-              <div className="mt-6 text-center">
-                <a
-                  href="#"
-                  className="text-sm text-gray-600 hover:text-terracotta-600 transition-colors"
-                >
-                  {t.contact.privacy}
-                </a>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
       {/* Hero Section */}
       <section id="hero" className="relative min-h-screen flex items-center justify-center">
         <div 
@@ -426,6 +298,153 @@ const Home = () => {
         </div>
       </section>
 
+      {/* Contact Section */}
+      <section id="contact" className="py-20 bg-gray-50">
+        <div className="container mx-auto px-6">
+          <div className="text-center mb-12">
+            <h2 id="contact-heading" className="text-3xl md:text-4xl font-serif mb-4 text-navy-800">
+              {t.contact.title}
+            </h2>
+          </div>
+
+          <div className="max-w-2xl mx-auto">
+            <div className="bg-white/90 backdrop-blur-sm p-8 rounded-lg shadow-lg">
+              <form onSubmit={handleSubmit} className="space-y-6">
+                <div>
+                  <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">
+                    {t.contact.form.name}
+                  </label>
+                  <input
+                    type="text"
+                    id="name"
+                    name="name"
+                    value={formData.name}
+                    onChange={handleChange}
+                    required
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-terracotta-500 focus:border-terracotta-500"
+                  />
+                </div>
+
+                <div>
+                  <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
+                    {t.contact.form.email}
+                  </label>
+                  <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleChange}
+                    required
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-terracotta-500 focus:border-terracotta-500"
+                  />
+                </div>
+
+                <div>
+                  <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-2">
+                    {t.contact.form.phone}
+                  </label>
+                  <input
+                    type="tel"
+                    id="phone"
+                    name="phone"
+                    value={formData.phone}
+                    onChange={handleChange}
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-terracotta-500 focus:border-terracotta-500"
+                  />
+                </div>
+
+                <div>
+                  <label htmlFor="service" className="block text-sm font-medium text-gray-700 mb-2">
+                    {t.contact.form.service}
+                  </label>
+                  <select
+                    id="service"
+                    name="service"
+                    value={formData.service}
+                    onChange={handleChange}
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-terracotta-500 focus:border-terracotta-500"
+                  >
+                    <option value="">{language === 'hu' ? 'Válasszon...' : 'Select...'}</option>
+                    <option value="consultation">{t.contact.form.serviceOptions.consultation}</option>
+                    <option value="design">{t.contact.form.serviceOptions.design}</option>
+                    <option value="furniture">{t.contact.form.serviceOptions.furniture}</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-2">
+                    {t.contact.form.message}
+                  </label>
+                  <textarea
+                    id="message"
+                    name="message"
+                    rows={4}
+                    value={formData.message}
+                    onChange={handleChange}
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-terracotta-500 focus:border-terracotta-500"
+                  />
+                </div>
+
+                {/* Privacy Policy Section */}
+                <div className="space-y-3">
+                  <p className="text-sm text-gray-700">
+                    {t.contact.form.privacyNotice}
+                  </p>
+                  <button
+                    type="button"
+                    onClick={() => setShowPrivacyModal(true)}
+                    className="text-terracotta-600 hover:text-terracotta-700 underline text-sm"
+                  >
+                    {t.contact.privacy}
+                  </button>
+                  <div className="flex items-center space-x-2">
+                    <input
+                      type="checkbox"
+                      id="privacy-accept"
+                      checked={privacyAccepted}
+                      onChange={(e) => setPrivacyAccepted(e.target.checked)}
+                      className="h-4 w-4 text-terracotta-600 focus:ring-terracotta-500 border-gray-300 rounded"
+                    />
+                    <label htmlFor="privacy-accept" className="text-sm text-gray-700">
+                      {t.contact.form.privacyAccept}
+                    </label>
+                  </div>
+                </div>
+
+                <button
+                  type="submit"
+                  disabled={!privacyAccepted}
+                  className={`w-full py-3 px-6 rounded-lg font-medium transition-all duration-300 ${
+                    privacyAccepted
+                      ? 'bg-terracotta-600 text-white hover:bg-white hover:text-terracotta-600 hover:border-navy-800 border-2 border-transparent'
+                      : 'bg-gray-300 text-gray-500 cursor-not-allowed border-2 border-transparent'
+                  }`}
+                >
+                  {t.contact.form.submit}
+                </button>
+              </form>
+
+              {/* Contact Details */}
+              <div className="mt-8 text-center space-y-2">
+                <div className="flex items-center justify-center space-x-3">
+                  <span className="text-terracotta-600">📞</span>
+                  <span className="text-sm">{t.contact.details.phone}</span>
+                </div>
+                <div className="flex items-center justify-center space-x-3">
+                  <span className="text-terracotta-600">✉️</span>
+                  <span className="text-sm">{t.contact.details.email}</span>
+                </div>
+                <div className="flex items-center justify-center space-x-3">
+                  <span className="text-terracotta-600">📍</span>
+                  <span className="text-sm">{t.contact.details.office}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Portfolio Gallery Modal */}
       {selectedProject && (
         <div className="fixed inset-0 bg-black bg-opacity-90 z-50 flex items-center justify-center p-4">
@@ -491,6 +510,41 @@ const Home = () => {
             <div className="mt-8 flex justify-end">
               <button
                 onClick={() => setSelectedService(null)}
+                className="bg-terracotta-600 text-white px-6 py-2 rounded-lg hover:bg-terracotta-700 transition-colors"
+              >
+                {language === 'hu' ? 'Bezárás' : 'Close'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Privacy Policy Modal */}
+      {showPrivacyModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+          <div className="bg-white rounded-lg max-w-2xl w-full max-h-[80vh] overflow-hidden">
+            <div className="flex justify-between items-center p-6 border-b">
+              <h3 className="text-2xl font-semibold text-navy-800">
+                {t.contact.privacy}
+              </h3>
+              <button
+                onClick={() => setShowPrivacyModal(false)}
+                className="text-gray-500 hover:text-gray-700 transition-colors"
+                aria-label={language === 'hu' ? 'Bezárás' : 'Close'}
+              >
+                <X size={24} />
+              </button>
+            </div>
+            
+            <div className="p-6 overflow-y-auto max-h-[60vh]">
+              <p className="text-gray-700 leading-relaxed">
+                {privacyPolicyContent[language]}
+              </p>
+            </div>
+
+            <div className="p-6 border-t flex justify-end">
+              <button
+                onClick={() => setShowPrivacyModal(false)}
                 className="bg-terracotta-600 text-white px-6 py-2 rounded-lg hover:bg-terracotta-700 transition-colors"
               >
                 {language === 'hu' ? 'Bezárás' : 'Close'}

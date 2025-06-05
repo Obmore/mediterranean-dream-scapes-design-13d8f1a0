@@ -26,11 +26,11 @@ const Header = () => {
   };
 
   const navItems = [
-    { key: 'contact', id: 'contact' },
     { key: 'home', id: 'hero' },
     { key: 'portfolio', id: 'portfolio' },
     { key: 'services', id: 'services' },
-    { key: 'about', id: 'about' }
+    { key: 'about', id: 'about' },
+    { key: 'contact', id: 'contact' }
   ];
 
   const toggleLanguage = () => {
@@ -44,7 +44,7 @@ const Header = () => {
       <div className="container mx-auto px-6 py-4 flex items-center justify-between">
         {/* Logo */}
         <button 
-          onClick={() => scrollToSection('contact')}
+          onClick={() => scrollToSection('hero')}
           className="text-2xl font-serif font-bold text-navy-800 hover:text-terracotta-600 transition-colors"
         >
           [COMPANY NAME]
