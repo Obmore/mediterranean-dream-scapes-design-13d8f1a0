@@ -3,21 +3,21 @@ export const translations = {
   hu: {
     // Navigation
     nav: {
+      contact: "Kapcsolat",
       home: "Főoldal",
       portfolio: "Portfólió",
       services: "Szolgáltatások",
-      about: "Rólunk",
-      contact: "Kapcsolat"
+      about: "Rólunk"
     },
     // Hero Section
     hero: {
       headline: "Életre keltjük a mediterrán lakberendezést",
-      subheading: "Elegáns, tágas terek – most Magyarországon is",
+      subheading: "Elegáns, tágas terek – Magyarországon",
       cta: "Inspiráció megtekintése"
     },
     // Portfolio
     portfolio: {
-      title: "Portfólió",
+      title: "Portfóliónk",
       subtitle: "Tekintse meg kiválasztott mediterrán stílusú projektjeinket",
       projects: {
         pearl: "Gyöngyöző Tenger Otthon",
@@ -30,33 +30,33 @@ export const translations = {
         garden: "Kerti Villa"
       },
       descriptions: {
-        pearl: "Ebben a projektben fehér mészkő, kék mozaik és natúr tölgyfa bútorok használatával teremtettünk légies tengerparti hangulatot. A kihívás a Budapest belvárosában lévő, szűk alaprajz optimalizálása volt."
+        pearl: "A fehér mészkő, kék mozaik és natúr tölgyfa bútorok légies tengerparti hangulatot teremtenek. A kihívás: Budapest belvárosi, szűk alaprajz optimalizálása."
       }
     },
     // Services
     services: {
-      title: "Szolgáltatások",
-      intro: "Cégünk a mediterrán stílusú lakberendezés teljes körű szolgáltatásait kínálja Magyarországon, a koncepciótervtől a kivitelezésig.",
+      title: "Szolgáltatásaink",
+      intro: "Teljes körű mediterrán stílusú lakberendezési szolgáltatásokat kínálunk Magyarországon, a koncepciótól a kivitelezésig.",
       consultation: {
         title: "Lakberendezési Tanácsadás",
-        description: "Részletes koncepcióterv, mood board és anyagválasztás, hogy megtaláljuk a tökéletes mediterrán hangulatot otthonában.",
+        description: "Részletes koncepcióterv, mood board és anyagválasztás, hogy otthonában visszaköszönjön a tökéletes mediterrán hangulat.",
         learnMore: "Tudj meg többet"
       },
       design: {
         title: "Teljes Körű Tervezés",
-        description: "Alaprajzok, 3D látványtervek és kivitelezés felügyelet, hogy a projektek pontosan az elképzelések szerint valósuljanak meg.",
+        description: "Alaprajzok, 3D látványtervek és kivitelezés felügyelet, biztosítva, hogy a projekt pontosan az elképzelések szerint valósuljon meg.",
         learnMore: "Tudj meg többet"
       },
       furniture: {
         title: "Luxus Egyedi Bútortervezés",
-        description: "Konyha-, fürdőszoba- és beépített szekrények személyre szabott tervezése, magas minőségű anyagokból.",
+        description: "Konyha-, fürdőszoba- és beépített szekrények személyre szabott tervezése csúcskategóriás anyagokkal.",
         learnMore: "Tudj meg többet"
       }
     },
     // About
     about: {
       title: "Rólunk",
-      intro: "Cégünk 2025 tavaszán alakult, és azóta is szenvedéllyel ötvözzük a mediterrán stílust a magyar hagyományokkal. Vezető Tervező: [Tervező Neve].",
+      intro: "Cégünk 2025 tavaszán alakult. Szenvedélyünk a mediterrán stílus és a magyar hagyományok ötvözése. Vezető tervező: [Tervező Neve].",
       whyChoose: "Miért válassz minket?",
       reasons: {
         experience: "Évtizedes nemzetközi tapasztalat",
@@ -100,11 +100,11 @@ export const translations = {
   en: {
     // Navigation
     nav: {
+      contact: "Contact",
       home: "Home",
       portfolio: "Portfolio",
       services: "Services",
-      about: "About",
-      contact: "Contact"
+      about: "About"
     },
     // Hero Section
     hero: {
@@ -114,7 +114,7 @@ export const translations = {
     },
     // Portfolio
     portfolio: {
-      title: "Portfolio",
+      title: "Our Portfolio",
       subtitle: "View Our Selected Mediterranean-Style Projects",
       projects: {
         pearl: "Pearl Sea Residence",
@@ -127,33 +127,33 @@ export const translations = {
         garden: "Garden Villa"
       },
       descriptions: {
-        pearl: "For this project, we used white limestone, blue mosaic, and natural oak furniture to create an airy seaside ambiance. The challenge was optimizing a compact floor plan in central Budapest."
+        pearl: "White limestone, blue mosaic, and natural oak furniture create an airy seaside ambiance. The challenge: optimizing a compact floor plan in central Budapest."
       }
     },
     // Services
     services: {
-      title: "Services",
-      intro: "Our firm offers comprehensive Mediterranean-style interior design services in Hungary, from concept to completion.",
+      title: "Our Services",
+      intro: "We offer end-to-end Mediterranean-style interior design services in Hungary, from concept to completion.",
       consultation: {
         title: "Interior Design Consultation",
-        description: "Detailed concept plan, mood board, and material selection to capture the perfect Mediterranean atmosphere in your home.",
+        description: "Detailed concept planning, mood board, and material selection to bring the perfect Mediterranean atmosphere to your home.",
         learnMore: "Learn More"
       },
       design: {
         title: "Full-Scale Design",
-        description: "Floor plans, 3D visualizations, and construction oversight to ensure projects come to life exactly as envisioned.",
+        description: "Floor plans, 3D renderings, and construction supervision to ensure your project comes to life exactly as envisioned.",
         learnMore: "Learn More"
       },
       furniture: {
         title: "Luxury Custom Furniture Design",
-        description: "Customized kitchen, bathroom, and built-in cabinetry design using premium materials.",
+        description: "Customized kitchen, bathroom, and built-in cabinetry design using top-quality materials.",
         learnMore: "Learn More"
       }
     },
     // About
     about: {
       title: "About Us",
-      intro: "Our company was founded in Spring 2025, and since then we have passionately combined Mediterranean style with Hungarian traditions. Lead Designer: [Designer Name].",
+      intro: "Founded in Spring 2025, our company brings together Mediterranean style and Hungarian traditions. Lead Designer: [Designer Name].",
       whyChoose: "Why Choose Us?",
       reasons: {
         experience: "Decades of International Experience",

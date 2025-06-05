@@ -4,7 +4,7 @@ import { X } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
 
 const Services = () => {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const [selectedService, setSelectedService] = useState<string | null>(null);
 
   const serviceDetails = {
@@ -21,6 +21,8 @@ const Services = () => {
       en: "Custom furniture design and manufacturing, built-in wardrobes, kitchen and bathroom furniture, use of luxury materials. Duration: 6-12 weeks. Price: 800,000-3,000,000 HUF depending on the project."
     }
   };
+
+  const serviceKeys = ['consultation', 'design', 'furniture'] as const;
 
   return (
     <div className="pt-20">
@@ -40,74 +42,34 @@ const Services = () => {
       <section className="py-20">
         <div className="container mx-auto px-6">
           <div className="grid md:grid-cols-3 gap-8">
-            {/* Consultation */}
-            <div className="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
-              <div className="h-48 bg-gradient-to-br from-blue-100 to-blue-200 flex items-center justify-center">
-                <div className="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center">
-                  <span className="text-white text-2xl">💡</span>
+            {serviceKeys.map((serviceKey) => {
+              const service = t.services[serviceKey];
+              return (
+                <div key={serviceKey} className="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
+                  <div className="h-48 bg-gradient-to-br from-blue-100 to-blue-200 flex items-center justify-center">
+                    <div className="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center">
+                      <span className="text-white text-2xl">
+                        {serviceKey === 'consultation' ? '💡' : serviceKey === 'design' ? '📐' : '🪑'}
+                      </span>
+                    </div>
+                  </div>
+                  <div className="p-6">
+                    <h3 className="text-xl font-semibold mb-4 text-navy-800">
+                      {service.title}
+                    </h3>
+                    <p className="text-gray-700 mb-6 leading-relaxed">
+                      {service.description}
+                    </p>
+                    <button
+                      onClick={() => setSelectedService(serviceKey)}
+                      className="text-terracotta-600 hover:text-terracotta-700 font-medium transition-colors"
+                    >
+                      {service.learnMore} →
+                    </button>
+                  </div>
                 </div>
-              </div>
-              <div className="p-6">
-                <h3 className="text-xl font-semibold mb-4 text-navy-800">
-                  {t.services.consultation.title}
-                </h3>
-                <p className="text-gray-700 mb-6 leading-relaxed">
-                  {t.services.consultation.description}
-                </p>
-                <button
-                  onClick={() => setSelectedService('consultation')}
-                  className="text-terracotta-600 hover:text-terracotta-700 font-medium transition-colors"
-                >
-                  {t.services.consultation.learnMore} →
-                </button>
-              </div>
-            </div>
-
-            {/* Design */}
-            <div className="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
-              <div className="h-48 bg-gradient-to-br from-terracotta-100 to-terracotta-200 flex items-center justify-center">
-                <div className="w-16 h-16 bg-terracotta-600 rounded-full flex items-center justify-center">
-                  <span className="text-white text-2xl">📐</span>
-                </div>
-              </div>
-              <div className="p-6">
-                <h3 className="text-xl font-semibold mb-4 text-navy-800">
-                  {t.services.design.title}
-                </h3>
-                <p className="text-gray-700 mb-6 leading-relaxed">
-                  {t.services.design.description}
-                </p>
-                <button
-                  onClick={() => setSelectedService('design')}
-                  className="text-terracotta-600 hover:text-terracotta-700 font-medium transition-colors"
-                >
-                  {t.services.design.learnMore} →
-                </button>
-              </div>
-            </div>
-
-            {/* Furniture */}
-            <div className="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
-              <div className="h-48 bg-gradient-to-br from-green-100 to-green-200 flex items-center justify-center">
-                <div className="w-16 h-16 bg-green-600 rounded-full flex items-center justify-center">
-                  <span className="text-white text-2xl">🪑</span>
-                </div>
-              </div>
-              <div className="p-6">
-                <h3 className="text-xl font-semibold mb-4 text-navy-800">
-                  {t.services.furniture.title}
-                </h3>
-                <p className="text-gray-700 mb-6 leading-relaxed">
-                  {t.services.furniture.description}
-                </p>
-                <button
-                  onClick={() => setSelectedService('furniture')}
-                  className="text-terracotta-600 hover:text-terracotta-700 font-medium transition-colors"
-                >
-                  {t.services.furniture.learnMore} →
-                </button>
-              </div>
-            </div>
+              );
+            })}
           </div>
         </div>
       </section>
@@ -130,7 +92,7 @@ const Services = () => {
             
             <div className="prose max-w-none">
               <p className="text-gray-700 leading-relaxed">
-                {serviceDetails[selectedService as keyof typeof serviceDetails][useLanguage().language]}
+                {serviceDetails[selectedService as keyof typeof serviceDetails][language]}
               </p>
             </div>
 

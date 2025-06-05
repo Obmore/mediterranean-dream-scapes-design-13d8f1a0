@@ -1,6 +1,5 @@
 
 import React, { useState, useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
 import { Menu, X } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
 
@@ -8,7 +7,6 @@ const Header = () => {
   const { language, setLanguage, t } = useLanguage();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const location = useLocation();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -19,12 +17,20 @@ const Header = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  const scrollToSection = (sectionId: string) => {
+    const element = document.getElementById(sectionId);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+    setIsMobileMenuOpen(false);
+  };
+
   const navItems = [
-    { key: 'home', path: '/' },
-    { key: 'portfolio', path: '/portfolio' },
-    { key: 'services', path: '/services' },
-    { key: 'about', path: '/about' },
-    { key: 'contact', path: '/contact' }
+    { key: 'contact', id: 'contact' },
+    { key: 'home', id: 'hero' },
+    { key: 'portfolio', id: 'portfolio' },
+    { key: 'services', id: 'services' },
+    { key: 'about', id: 'about' }
   ];
 
   const toggleLanguage = () => {
@@ -37,22 +43,23 @@ const Header = () => {
     }`}>
       <div className="container mx-auto px-6 py-4 flex items-center justify-between">
         {/* Logo */}
-        <Link to="/" className="text-2xl font-serif font-bold text-navy-800">
+        <button 
+          onClick={() => scrollToSection('contact')}
+          className="text-2xl font-serif font-bold text-navy-800 hover:text-terracotta-600 transition-colors"
+        >
           [COMPANY NAME]
-        </Link>
+        </button>
 
         {/* Desktop Navigation */}
         <nav className="hidden md:flex items-center space-x-8">
           {navItems.map((item) => (
-            <Link
+            <button
               key={item.key}
-              to={item.path}
-              className={`relative text-sm font-medium transition-colors hover:text-terracotta-600 ${
-                location.pathname === item.path ? 'text-terracotta-600' : 'text-gray-700'
-              } after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-0 after:bg-terracotta-600 after:transition-all after:duration-300 hover:after:w-full`}
+              onClick={() => scrollToSection(item.id)}
+              className="relative text-sm font-medium transition-colors hover:text-terracotta-600 text-gray-700 after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-0 after:bg-terracotta-600 after:transition-all after:duration-300 hover:after:w-full"
             >
               {t.nav[item.key as keyof typeof t.nav]}
-            </Link>
+            </button>
           ))}
         </nav>
 
@@ -61,6 +68,7 @@ const Header = () => {
           <button
             onClick={toggleLanguage}
             className="px-3 py-1 text-sm font-medium border rounded-md transition-colors hover:bg-terracotta-600 hover:text-white hover:border-terracotta-600"
+            aria-label={language === 'hu' ? 'Switch to English' : 'Switch to Hungarian'}
           >
             {language === 'hu' ? t.language.english : t.language.hungarian}
           </button>
@@ -68,6 +76,8 @@ const Header = () => {
           <button
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             className="md:hidden p-2"
+            aria-label="Toggle mobile menu"
+            aria-controls="mobile-menu"
           >
             {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
@@ -75,19 +85,16 @@ const Header = () => {
 
         {/* Mobile Navigation */}
         {isMobileMenuOpen && (
-          <div className="absolute top-full left-0 right-0 bg-white shadow-lg md:hidden">
+          <div id="mobile-menu" className="absolute top-full left-0 right-0 bg-white shadow-lg md:hidden">
             <nav className="px-6 py-4 space-y-4">
               {navItems.map((item) => (
-                <Link
+                <button
                   key={item.key}
-                  to={item.path}
-                  onClick={() => setIsMobileMenuOpen(false)}
-                  className={`block text-sm font-medium transition-colors hover:text-terracotta-600 ${
-                    location.pathname === item.path ? 'text-terracotta-600' : 'text-gray-700'
-                  }`}
+                  onClick={() => scrollToSection(item.id)}
+                  className="block w-full text-left text-sm font-medium transition-colors hover:text-terracotta-600 text-gray-700"
                 >
                   {t.nav[item.key as keyof typeof t.nav]}
-                </Link>
+                </button>
               ))}
             </nav>
           </div>
