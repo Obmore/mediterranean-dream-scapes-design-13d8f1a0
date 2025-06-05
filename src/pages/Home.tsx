@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useCallback, useMemo } from 'react';
 import { X } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
 
@@ -17,15 +17,16 @@ const Home = () => {
     message: ''
   });
 
-  // Smooth scroll to section
-  const scrollToSection = (sectionId: string) => {
+  // Memoize the scroll to section function
+  const scrollToSection = useCallback((sectionId: string) => {
     const element = document.getElementById(sectionId);
     if (element) {
       element.scrollIntoView({ behavior: 'smooth' });
     }
-  };
+  }, []);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  // Memoize the form submit handler
+  const handleSubmit = useCallback((e: React.FormEvent) => {
     e.preventDefault();
     if (!privacyAccepted) {
       alert(t.contact.form.privacyError);
@@ -33,16 +34,18 @@ const Home = () => {
     }
     console.log('Form submitted:', formData);
     alert(language === 'hu' ? 'Köszönjük! Hamarosan felvesszük Önnel a kapcsolatot.' : 'Thank you! We will contact you soon.');
-  };
+  }, [privacyAccepted, t.contact.form.privacyError, formData, language]);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-    setFormData({
-      ...formData,
+  // Memoize the form change handler
+  const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+    setFormData(prev => ({
+      ...prev,
       [e.target.name]: e.target.value
-    });
-  };
+    }));
+  }, []);
 
-  const projectImages = {
+  // Memoize project images to avoid recreating on every render
+  const projectImages = useMemo(() => ({
     pearl: [
       'https://images.unsplash.com/photo-1721322800607-8c38375eef04?q=80&w=2070&auto=format&fit=crop',
       'https://images.unsplash.com/photo-1524230572899-a752b3835840?q=80&w=2070&auto=format&fit=crop',
@@ -83,9 +86,10 @@ const Home = () => {
       'https://images.unsplash.com/photo-1493397212122-2b85dda8106b?q=80&w=2070&auto=format&fit=crop',
       'https://images.unsplash.com/photo-1473177104440-ffee2f376098?q=80&w=2070&auto=format&fit=crop'
     ]
-  };
+  }), []);
 
-  const serviceDetails = {
+  // Memoize service details to avoid recreating on every render
+  const serviceDetails = useMemo(() => ({
     consultation: {
       hu: "Részletes felmérés és igényfeltárás, személyre szabott koncepcióterv készítése, anyag- és színválasztási tanácsadás, 3D vizualizációk készítése. Időtartam: 2-3 hét. Ár: 150.000-300.000 Ft projektmérettől függően.",
       en: "Detailed assessment and needs analysis, personalized concept plan creation, material and color selection consultation, 3D visualization creation. Duration: 2-3 weeks. Price: 150,000-300,000 HUF depending on project size."
@@ -98,14 +102,16 @@ const Home = () => {
       hu: "Egyedi bútorok tervezése és gyártása, beépített szekrények, konyhai és fürdőszobai bútorok, luxus anyagok használata. Időtartam: 6-12 hét. Ár: 800.000-3.000.000 Ft projekttől függően.",
       en: "Custom furniture design and manufacturing, built-in wardrobes, kitchen and bathroom furniture, use of luxury materials. Duration: 6-12 weeks. Price: 800,000-3,000,000 HUF depending on the project."
     }
-  };
+  }), []);
 
-  const serviceKeys = ['consultation', 'design', 'furniture'] as const;
+  // Memoize service keys to avoid recreating on every render
+  const serviceKeys = useMemo(() => ['consultation', 'design', 'furniture'] as const, []);
 
-  const privacyPolicyContent = {
+  // Memoize privacy policy content to avoid recreating on every render
+  const privacyPolicyContent = useMemo(() => ({
     hu: "Ez egy helyőrző adatvédelmi tájékoztató. Itt található a teljes adatvédelmi politika szövege, amely leírja, hogyan gyűjtjük, használjuk és védjük személyes adatait. A valós implementációban itt szerepelne a teljes jogi szöveg az adatkezelésről, sütihasználatról és a felhasználói jogokról.",
     en: "This is a placeholder privacy policy. Here you would find the complete privacy policy text that describes how we collect, use, and protect your personal data. In a real implementation, this would contain the full legal text about data processing, cookie usage, and user rights."
-  };
+  }), []);
 
   return (
     <div className="w-full">

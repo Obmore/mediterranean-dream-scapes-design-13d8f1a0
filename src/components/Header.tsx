@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Menu, X } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
 
@@ -8,34 +8,38 @@ const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-  useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
-    };
-
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+  // Memoize the scroll handler to avoid recreating on every render
+  const handleScroll = useCallback(() => {
+    setIsScrolled(window.scrollY > 50);
   }, []);
 
-  const scrollToSection = (sectionId: string) => {
+  useEffect(() => {
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [handleScroll]);
+
+  // Memoize the scroll to section function
+  const scrollToSection = useCallback((sectionId: string) => {
     const element = document.getElementById(sectionId);
     if (element) {
       element.scrollIntoView({ behavior: 'smooth' });
     }
     setIsMobileMenuOpen(false);
-  };
+  }, []);
 
-  const navItems = [
+  // Memoize navigation items to avoid recreating on every render
+  const navItems = React.useMemo(() => [
     { key: 'home', id: 'hero' },
     { key: 'portfolio', id: 'portfolio' },
     { key: 'services', id: 'services' },
     { key: 'about', id: 'about' },
     { key: 'contact', id: 'contact' }
-  ];
+  ], []);
 
-  const toggleLanguage = () => {
+  // Memoize the language toggle function
+  const toggleLanguage = useCallback(() => {
     setLanguage(language === 'hu' ? 'en' : 'hu');
-  };
+  }, [language, setLanguage]);
 
   return (
     <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${

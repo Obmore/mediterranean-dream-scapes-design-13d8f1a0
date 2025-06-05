@@ -1,5 +1,5 @@
 
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import { translations } from '../utils/translations';
 
 type Language = 'hu' | 'en';
@@ -23,33 +23,47 @@ export const useLanguage = () => {
 export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [language, setLanguage] = useState<Language>('hu');
 
-  useEffect(() => {
-    // Auto-detect language on first visit
+  // Memoize the language detection function
+  const detectLanguage = useCallback((): Language => {
     const savedLanguage = localStorage.getItem('preferred-language') as Language;
     if (savedLanguage && (savedLanguage === 'hu' || savedLanguage === 'en')) {
-      setLanguage(savedLanguage);
-    } else {
-      // Detect browser language
-      const browserLanguage = navigator.language.toLowerCase();
-      if (browserLanguage.startsWith('en')) {
-        setLanguage('en');
-      } else if (browserLanguage.startsWith('hu')) {
-        setLanguage('hu');
-      } else {
-        setLanguage('hu'); // Default to Hungarian
-      }
+      return savedLanguage;
     }
+    
+    // Detect browser language
+    const browserLanguage = navigator.language.toLowerCase();
+    if (browserLanguage.startsWith('en')) {
+      return 'en';
+    } else if (browserLanguage.startsWith('hu')) {
+      return 'hu';
+    }
+    return 'hu'; // Default to Hungarian
   }, []);
 
-  const handleSetLanguage = (lang: Language) => {
+  // Auto-detect language on first visit
+  useEffect(() => {
+    const detectedLanguage = detectLanguage();
+    setLanguage(detectedLanguage);
+  }, [detectLanguage]);
+
+  // Memoize the language setter to avoid recreating on every render
+  const handleSetLanguage = useCallback((lang: Language) => {
     setLanguage(lang);
     localStorage.setItem('preferred-language', lang);
-  };
+  }, []);
 
-  const t = translations[language];
+  // Memoize the translations object to avoid recreating on every render
+  const t = React.useMemo(() => translations[language], [language]);
+
+  // Memoize the context value to avoid recreating on every render
+  const contextValue = React.useMemo(() => ({
+    language,
+    setLanguage: handleSetLanguage,
+    t
+  }), [language, handleSetLanguage, t]);
 
   return (
-    <LanguageContext.Provider value={{ language, setLanguage: handleSetLanguage, t }}>
+    <LanguageContext.Provider value={contextValue}>
       {children}
     </LanguageContext.Provider>
   );
