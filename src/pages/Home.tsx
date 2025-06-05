@@ -1,7 +1,7 @@
+
 import React, { useState, useCallback, useMemo } from 'react';
 import { X } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
-import ImageZoom from '../components/ImageZoom';
 
 const Home = () => {
   const { t, language } = useLanguage();
@@ -9,7 +9,6 @@ const Home = () => {
   const [selectedService, setSelectedService] = useState<string | null>(null);
   const [showPrivacyModal, setShowPrivacyModal] = useState(false);
   const [privacyAccepted, setPrivacyAccepted] = useState(false);
-  const [selectedImage, setSelectedImage] = useState<{ src: string; alt: string } | null>(null);
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -475,11 +474,7 @@ const Home = () => {
                   key={index}
                   src={image}
                   alt={`${t.portfolio.projects[selectedProject as keyof typeof t.portfolio.projects]} - Image ${index + 1}`}
-                  className="w-full h-64 md:h-96 object-cover rounded-lg cursor-zoom-in hover:opacity-90 transition-opacity"
-                  onClick={() => setSelectedImage({
-                    src: image,
-                    alt: `${t.portfolio.projects[selectedProject as keyof typeof t.portfolio.projects]} - Image ${index + 1}`
-                  })}
+                  className="w-full h-64 md:h-96 object-cover rounded-lg"
                 />
               ))}
             </div>
@@ -494,14 +489,6 @@ const Home = () => {
           </div>
         </div>
       )}
-
-      {/* Image Zoom Modal */}
-      <ImageZoom
-        src={selectedImage?.src || ''}
-        alt={selectedImage?.alt || ''}
-        isOpen={!!selectedImage}
-        onClose={() => setSelectedImage(null)}
-      />
 
       {/* Service Details Modal */}
       {selectedService && (
